@@ -16,6 +16,12 @@ export async function login({ username, password }: LoginForm) {
   if (!isCorrectPassword) return null;
   return user;
 }
+export async function register({ username, password }: LoginForm) {
+  const passwordHash = await bcrypt.hash(password, 10);
+  return db.user.create({
+    data: { username, passwordHash },
+  });
+}
 
 const sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
